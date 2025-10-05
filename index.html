@@ -393,5 +393,37 @@
       // Ako želiš da se slike ili članovi dinamički menjaju prema podacima, možeš ovo proširiti.
     })();
   </script>
+<script>
+  const form = document.getElementById('contactForm');
+  const stepForm = document.getElementById('step-form');
+  const stepContent = document.getElementById('step-content');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const phone = form.phone.value.trim();
+    const message = form.message.value.trim();
+
+    if(!name || !phone || !message){
+      alert('Popuni sva polja pre nego što nastaviš.');
+      return;
+    }
+
+    // Sakrij prvi deo, prikaži drugi
+    stepForm.style.display = 'none';
+    stepContent.style.display = 'block';
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    form.reset();
+  });
+
+  document.getElementById('backBtn').addEventListener('click', function(){
+    stepContent.style.display = 'none';
+    stepForm.style.display = 'block';
+  });
+</script>
 </body>
 </html>
+
