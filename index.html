@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bend - kontakt i prezentacija</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#ff6b6b;
+      --accent-2:#6b8bff;
+      --card-bg: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.06);
+      --text: #f5f7fb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      min-height:100vh;
+      color:var(--text);
+      background: linear-gradient(135deg, #0f172a 0%, #031024 40%, #0b1220 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    /* soft hero background with shapes */
+    .bg-shapes{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(111,80,255,0.08) 0 10%, transparent 11%),
+        radial-gradient(circle at 85% 80%, rgba(255,107,107,0.06) 0 12%, transparent 13%),
+        linear-gradient(180deg, rgba(255,255,255,0.01), transparent 40%);
+      filter: blur(18px) saturate(120%);
+    }
+
+    .container{
+      z-index:1;
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:20px;
+      box-shadow: 0 10px 35px rgba(2,6,23,0.6);
+      border: 1px solid rgba(255,255,255,0.04);
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:white;
+      font-size:20px;
+      box-shadow: 0 6px 18px rgba(107,139,255,0.12);
+    }
+    h1{margin:0;font-size:18px}
+    p.lead{margin:0;color:rgba(245,247,251,0.75);font-size:13px}
+
+    .card{
+      background:var(--glass);
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    form .row{display:flex;gap:12px;margin-bottom:12px}
+    form label{font-size:13px;color:rgba(245,247,251,0.85);margin-bottom:6px;display:block;}
+    input[type="text"], input[type="tel"], textarea{
+      width:100%;
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:12px 10px;
+      border-radius:8px;
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+      transition:box-shadow .15s, border-color .15s;
+    }
+    input:focus, textarea:focus{
+      box-shadow:0 6px 18px rgba(107,139,255,0.08);
+      border-color: rgba(107,139,255,0.45);
+    }
+    textarea{min-height:110px;resize:vertical}
+
+    .actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-top:8px;
+    }
+    button{
+      appearance:none;
+      border:0;
+      padding:10px 16px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn-primary{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      box-shadow: 0 8px 22px rgba(111,80,255,0.12);
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.05);
+      color:var(--text);
+    }
+
+    /* content view */
+    .content-grid{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:18px;
+    }
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+      gap:10px;
+    }
+    .gallery img{
+      width:100%;
+      height:140px;
+      object-fit:cover;
+      border-radius:10px;
+      display:block;
+      border:2px solid rgba(255,255,255,0.03);
+    }
+    .side{
+      padding:8px;
+    }
+    .meta{font-size:14px;color:rgba(245,247,251,0.9)}
+    .members{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+    .member{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(255,255,255,0.02);
+      padding:8px;
+      border-radius:8px;
+    }
+    .member .avatar{
+      width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent-2),var(--accent));
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:white;
+    }
+    .location{margin-top:10px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px}
+
+    footer{font-size:13px;color:rgba(245,247,251,0.6);text-align:center;padding-top:6px}
+
+    /* responsive */
+    @media (max-width:900px){
+      .content-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-shapes" aria-hidden="true"></div>
+
+  <div class="container" role="main">
+    <header>
+      <div class="logo">BND</div>
+      <div>
+        <h1>Bend: kontakt i prezentacija</h1>
+        <p class="lead">Unesi podatke i rezerviši nastup — ili samo pošalji poruku.</p>
+      </div>
+    </header>
+
+    <!-- STEP 1: FORM -->
+    <section id="step-form" class="card" aria-labelledby="form-title">
+      <h2 id="form-title" style="font-size:15px;margin-bottom:10px">Rezervacija / poruka</h2>
+
+      <form id="contactForm">
+        <div class="row">
+          <div style="flex:1">
+            <label for="name">Ime</label>
+            <input id="name" name="name" type="text" placeholder="Tvoje ime" required />
+          </div>
+          <div style="width:220px">
+            <label for="phone">Broj telefona</label>
+            <input id="phone" name="phone" type="tel" placeholder="+381 6..." required />
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <label for="message">Poruka / detalji događaja</label>
+          <textarea id="message" name="message" placeholder="Npr. datum, mesto, tip događaja..." required></textarea>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <small style="color:rgba(245,247,251,0.7)">Poruke će stići na email benda.</small>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-ghost" id="clearBtn">Obriši</button>
+          <button type="submit" class="btn-primary">Sledeće →</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- STEP 2: CONTENT (initially hidden) -->
+    <section id="step-content" class="card" style="display:none;">
+      <div class="content-grid">
+        <div>
+          <h3 style="margin-top:0">Galerija i opis</h3>
+          <div class="gallery" id="gallery">
+            <!-- slike --> 
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend nastup 1">
+            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend nastup 2">
+            <img src="https://images.unsplash.com/photo-1526178616170-2d5544f6b9c4?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend portret">
+            <img src="https://images.unsplash.com/photo-1506152983158-bf9b0eef9a10?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend pozornica">
+          </div>
+
+          <div style="margin-top:12px">
+            <h4 style="margin-bottom:6px">Opis benda</h4>
+            <p id="bandDescription" style="margin:0;color:rgba(245,247,251,0.88)">
+              [Ime benda] je energičan sastav koji kombinuje moderni rock i pop sa primesama groove-a. Poznati su po snažnim refrenima, zaraznim ritmovima i nastupima koji ostavljaju publiku bez daha. Repertoar obuhvata originalne pesme i pažljivo birane obrada.
+            </p>
+          </div>
+        </div>
+
+        <aside class="side">
+          <div>
+            <h4 style="margin:0 0 8px 0">Članovi</h4>
+            <div class="members" id="membersList">
+              <div class="member">
+                <div class="avatar">A</div>
+                <div>
+                  <div style="font-weight:600">Aleksandar Petrović</div>
+                  <div style="font-size:13px;color:rgba(245,247,251,0.7)">Gitara & vokal</div>
+                </div>
+              </div>
+              <div class="member">
+                <div class="avatar">M</div>
+                <div>
+                  <div style="font-weight:600">Maja Ilić</div>
+                  <div style="font-size:13px;color:rgba(245,247,251,0.7)">Bas</div>
+                </div>
+              </div>
+              <div class="member">
+                <div class="avatar">T</div>
+                <div>
+                  <div style="font-weight:600">Toma Novak</div>
+                  <div style="font-size:13px;color:rgba(245,247,251,0.7)">Bubnjevi</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="location" aria-label="Lokacija">
+              <div style="font-weight:700">Glavni član: Aleksandar Petrović</div>
+              <div style="margin-top:8px;color:rgba(245,247,251,0.8)">
+                Lokacija: Beograd, Srbija<br>
+                Dostupnost: vikendi i praznici (po dogovoru)
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <button id="backBtn" class="btn-ghost" style="width:100%">Nazad na formu</button>
+              <button id="sendBtn" class="btn-primary" style="width:100%;margin-top:8px">Pošalji rezervaciju</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <footer>
+      Napravljeno brzo — prilagodi tekstове i slike. Zamenite Formspree ID da bi email stizao direktno na vaš inbox.
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const form = document.getElementById('contactForm');
+      const stepForm = document.getElementById('step-form');
+      const stepContent = document.getElementById('step-content');
+      const clearBtn = document.getElementById('clearBtn');
+      const backBtn = document.getElementById('backBtn');
+      const sendBtn = document.getElementById('sendBtn');
+
+      // --- PODESI OVDE: zameni sa svojim Formspree ID (npr. https://formspree.io/f/abcdxyz)
+      // Ako ne želiš Formspree, ostavi prazan string i koristit će se mailto fallback.
+      const FORMSPREE_ENDPOINT = ""; // primer: "https://formspree.io/f/abcd1234"
+
+      // Pošalji formu - prvi korak prelazak na stranicu sa sadržajem
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        // validacija (simple)
+        const name = form.name.value.trim();
+        const phone = form.phone.value.trim();
+        const message = form.message.value.trim();
+        if(!name || !phone || !message){
+          alert('Popuni sva polja pre nego što nastaviš.');
+          return;
+        }
+
+        // prikaz sadržaja
+        stepForm.style.display = 'none';
+        stepContent.style.display = 'block';
+        window.scrollTo({top:0,behavior:'smooth'});
+        // zapamti vrednosti u global (za slanje kasnije)
+        window._reservationData = {name,phone,message};
+        // ažuriraj tekst u opisu (možeš prilagoditi)
+        document.getElementById('bandDescription').textContent =
+          "[Ime benda] je energičan sastav koji kombinuje moderni rock i pop sa primesama groove-a. Repertoar uključuje originalne pesme i pažljivo birane obrade. Kontakt: " + name + " — poruka spremljena za slanje.";
+      });
+
+      clearBtn.addEventListener('click', function(){ form.reset(); });
+
+      backBtn.addEventListener('click', function(){
+        stepContent.style.display = 'none';
+        stepForm.style.display = 'block';
+      });
+
+      // kad korisnik klikne Pošalji rezervaciju -> šalje se email (Formspree ili mailto fallback)
+      sendBtn.addEventListener('click', async function(){
+        const data = window._reservationData || {};
+        if(!data.name){
+          alert('Nema podataka iz forme — prvo popuni i pritisni "Sledeće".');
+          return;
+        }
+
+        // sastavi telo poruke
+        const subject = encodeURIComponent('Rezervacija/bend: ' + (data.name||'Anonimno'));
+        const bodyText = [
+          'Ime: ' + data.name,
+          'Telefon: ' + data.phone,
+          'Poruka: ' + data.message,
+          '',
+          'Poslato sa sajta benda'
+        ].join('\n');
+
+        if(FORMSPREE_ENDPOINT && FORMSPREE_ENDPOINT.startsWith('https://')){
+          // pošalji POST na Formspree
+          try{
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Šaljem...';
+            const payload = {
+              name: data.name,
+              phone: data.phone,
+              message: data.message,
+              _subject: 'Rezervacija: ' + data.name
+            };
+            const resp = await fetch(FORMSPREE_ENDPOINT, {
+              method:'POST',
+              headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if(resp.ok){
+              alert('Poruka poslata! Bend će te kontaktirati uskoro.');
+              form.reset();
+              stepContent.style.display = 'none';
+              stepForm.style.display = 'block';
+            } else {
+              const json = await resp.json().catch(()=>null);
+              console.error('Formspree greška', resp.status, json);
+              alert('Došlo je do greške pri slanju. Pokušaj ponovo ili koristi mailto.');
+            }
+          }catch(err){
+            console.error(err);
+            alert('Greška pri slanju. Proveri internet vezu.');
+          }finally{
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Pošalji rezervaciju';
+          }
+        } else {
+          // fallback: mailto
+          const mailto = 'mailto:f/movkldze
+            + '?subject=' + subject
+            + '&body=' + encodeURIComponent(bodyText);
+          // otvori mail klijent
+          window.location.href = mailto;
+        }
+      });
+
+      // --- OPTIONAL: zameni slike/članove dinamički (primer)
+      // Ako želiš da se slike ili članovi dinamički menjaju prema podacima, možeš ovo proširiti.
+    })();
+  </script>
+</body>
+</html>
