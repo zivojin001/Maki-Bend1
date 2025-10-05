@@ -294,7 +294,7 @@
       const backBtn = document.getElementById('backBtn');
       const sendBtn = document.getElementById('sendBtn');
 
-      // --- PODESI OVDE: zameni sa svojim Formspree ID (npr. https://formspree.io/f/abcdxyz)
+      // --- PODESI OVDE: zameni sa svojim Formspree ID (npr. https://formspree.io/f/xdkwdgqb)
       // Ako ne želiš Formspree, ostavi prazan string i koristit će se mailto fallback.
       const FORMSPREE_ENDPOINT = ""; // primer: "https://formspree.io/f/abcd1234"
 
@@ -318,7 +318,7 @@
         window._reservationData = {name,phone,message};
         // ažuriraj tekst u opisu (možeš prilagoditi)
         document.getElementById('bandDescription').textContent =
-          "[Ime benda] je energičan sastav koji kombinuje moderni rock i pop sa primesama groove-a. Repertoar uključuje originalne pesme i pažljivo birane obrade. Kontakt: " + name + " — poruka spremljena za slanje.";
+          "[Maki Bend] je energičan sastav koji kombinuje moderni rock i pop sa primesama groove-a. Repertoar uključuje originalne pesme i pažljivo birane obrade. Kontakt: " + name + " — poruka spremljena za slanje.";
       });
 
       clearBtn.addEventListener('click', function(){ form.reset(); });
@@ -426,5 +426,6 @@
 </script>
 </body>
 </html>
+
 
 
