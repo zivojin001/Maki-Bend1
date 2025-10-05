@@ -1,433 +1,236 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bend - kontakt i prezentacija</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezervacija benda</title>
   <style>
-    :root{
-      --accent:#ff6b6b;
-      --accent-2:#6b8bff;
-      --card-bg: rgba(255,255,255,0.06);
-      --glass: rgba(255,255,255,0.06);
-      --text: #f5f7fb;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      min-height:100vh;
-      color:var(--text);
-      background: linear-gradient(135deg, #0f172a 0%, #031024 40%, #0b1220 100%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:28px;
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      margin: 0;
+      padding: 0;
     }
 
-    /* soft hero background with shapes */
-    .bg-shapes{
-      position:fixed;
-      inset:0;
-      z-index:0;
-      pointer-events:none;
-      background-image:
-        radial-gradient(circle at 10% 10%, rgba(111,80,255,0.08) 0 10%, transparent 11%),
-        radial-gradient(circle at 85% 80%, rgba(255,107,107,0.06) 0 12%, transparent 13%),
-        linear-gradient(180deg, rgba(255,255,255,0.01), transparent 40%);
-      filter: blur(18px) saturate(120%);
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
     }
 
-    .container{
-      z-index:1;
-      width:100%;
-      max-width:980px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;
-      padding:20px;
-      box-shadow: 0 10px 35px rgba(2,6,23,0.6);
-      border: 1px solid rgba(255,255,255,0.04);
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
+    h1, h2 {
+      text-align: center;
     }
 
-    header{
-      display:flex;
-      align-items:center;
-      gap:16px;
-    }
-    .logo{
-      width:56px;
-      height:56px;
-      border-radius:10px;
-      background: linear-gradient(135deg,var(--accent),var(--accent-2));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      color:white;
-      font-size:20px;
-      box-shadow: 0 6px 18px rgba(107,139,255,0.12);
-    }
-    h1{margin:0;font-size:18px}
-    p.lead{margin:0;color:rgba(245,247,251,0.75);font-size:13px}
-
-    .card{
-      background:var(--glass);
-      border-radius:12px;
-      padding:18px;
-      border:1px solid rgba(255,255,255,0.03);
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
     }
 
-    form .row{display:flex;gap:12px;margin-bottom:12px}
-    form label{font-size:13px;color:rgba(245,247,251,0.85);margin-bottom:6px;display:block;}
-    input[type="text"], input[type="tel"], textarea{
-      width:100%;
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      padding:12px 10px;
-      border-radius:8px;
-      color:var(--text);
-      outline:none;
-      font-size:14px;
-      transition:box-shadow .15s, border-color .15s;
-    }
-    input:focus, textarea:focus{
-      box-shadow:0 6px 18px rgba(107,139,255,0.08);
-      border-color: rgba(107,139,255,0.45);
-    }
-    textarea{min-height:110px;resize:vertical}
-
-    .actions{
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      margin-top:8px;
-    }
-    button{
-      appearance:none;
-      border:0;
-      padding:10px 16px;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
-    }
-    .btn-primary{
-      background: linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:white;
-      box-shadow: 0 8px 22px rgba(111,80,255,0.12);
-    }
-    .btn-ghost{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.05);
-      color:var(--text);
+    button {
+      padding: 12px 20px;
+      background-color: #ff6600;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 5px;
     }
 
-    /* content view */
-    .content-grid{
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:18px;
+    .band-member {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      background-color: rgba(255,255,255,0.05);
+      padding: 10px;
+      border-radius: 10px;
     }
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
-      gap:10px;
-    }
-    .gallery img{
-      width:100%;
-      height:140px;
-      object-fit:cover;
-      border-radius:10px;
-      display:block;
-      border:2px solid rgba(255,255,255,0.03);
-    }
-    .side{
-      padding:8px;
-    }
-    .meta{font-size:14px;color:rgba(245,247,251,0.9)}
-    .members{margin-top:8px;display:flex;flex-direction:column;gap:8px}
-    .member{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background: rgba(255,255,255,0.02);
-      padding:8px;
-      border-radius:8px;
-    }
-    .member .avatar{
-      width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent-2),var(--accent));
-      display:flex;align-items:center;justify-content:center;font-weight:700;color:white;
-    }
-    .location{margin-top:10px;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px}
 
-    footer{font-size:13px;color:rgba(245,247,251,0.6);text-align:center;padding-top:6px}
+    .band-member img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 20px;
+    }
 
-    /* responsive */
-    @media (max-width:900px){
-      .content-grid{grid-template-columns:1fr}
+    #step-content {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .band-member {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .band-member img {
+        margin-bottom: 10px;
+      }
+    }
+
+    a.phone-link {
+      color: #ffd700;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <div class="bg-shapes" aria-hidden="true"></div>
+  <div class="container">
+    <h1>Rezerviši Bend</h1>
 
-  <div class="container" role="main">
-    <header>
-      <div class="logo">BND</div>
-      <div>
-        <h1>Bend: kontakt i prezentacija</h1>
-        <p class="lead">Unesi podatke i rezerviši nastup — ili samo pošalji poruku.</p>
-      </div>
-    </header>
-
-    <!-- STEP 1: FORM -->
-    <section id="step-form" class="card" aria-labelledby="form-title">
-      <h2 id="form-title" style="font-size:15px;margin-bottom:10px">Rezervacija / poruka</h2>
-
+    <!-- Korak 1 -->
+    <section id="step-form">
       <form id="contactForm">
-        <div class="row">
-          <div style="flex:1">
-            <label for="name">Ime</label>
-            <input id="name" name="name" type="text" placeholder="Tvoje ime" required />
-          </div>
-          <div style="width:220px">
-            <label for="phone">Broj telefona</label>
-            <input id="phone" name="phone" type="tel" placeholder="+381 6..." required />
-          </div>
-        </div>
+        <label for="name">Ime i prezime:</label>
+        <input type="text" id="name" name="name" required>
 
-        <div style="margin-bottom:12px">
-          <label for="message">Poruka / detalji događaja</label>
-          <textarea id="message" name="message" placeholder="Npr. datum, mesto, tip događaja..." required></textarea>
-        </div>
+        <label for="phone">Broj telefona:</label>
+        <input type="tel" id="phone" name="phone" required>
 
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <small style="color:rgba(245,247,251,0.7)">Poruke će stići na email benda.</small>
-        </div>
+        <label for="message">Poruka:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
 
-        <div class="actions">
-          <button type="button" class="btn-ghost" id="clearBtn">Obriši</button>
-          <button type="submit" class="btn-primary">Sledeće →</button>
+        <div style="text-align:center;">
+          <button type="submit">Sledeće →</button>
         </div>
       </form>
     </section>
 
-    <!-- STEP 2: CONTENT (initially hidden) -->
-    <section id="step-content" class="card" style="display:none;">
-      <div class="content-grid">
+    <!-- Korak 2 -->
+    <section id="step-content">
+      <h2>O Bendu</h2>
+      <p>Mi smo bend sa 4 profesionalna muzičara, spremni da ulepšamo vaše događaje muzikom uživo.</p>
+
+      <!-- Član 1 -->
+      <div class="band-member">
+        <img src="muzicar1.jpg" alt="Marko Petrović">
         <div>
-          <h3 style="margin-top:0">Galerija i opis</h3>
-          <div class="gallery" id="gallery">
-            <!-- slike --> 
-            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend nastup 1">
-            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend nastup 2">
-            <img src="https://images.unsplash.com/photo-1526178616170-2d5544f6b9c4?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend portret">
-            <img src="https://images.unsplash.com/photo-1506152983158-bf9b0eef9a10?w=1200&q=60&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Bend pozornica">
-          </div>
-
-          <div style="margin-top:12px">
-            <h4 style="margin-bottom:6px">Opis benda</h4>
-            <p id="bandDescription" style="margin:0;color:rgba(245,247,251,0.88)">
-              [Maki Benda] je energičan sastav koji kombinuje moderni narodni i pop sa primesama groove-a. Poznati su po snažnim refrenima, zaraznim ritmovima i nastupima koji ostavljaju publiku bez daha. Repertoar obuhvata originalne pesme i pažljivo birane obrada.
-            </p>
-          </div>
+          <strong>Marko Petrović</strong><br>
+          Gitara & Vokal (Glavni član)<br>
+          📍 Lokacija: Beograd<br>
+          📞 Telefon: <a class="phone-link" href="tel:+381641234567">+381 64 123 4567</a>
         </div>
+      </div>
 
-        <aside class="side">
-          <div>
-            <h4 style="margin:0 0 8px 0">Članovi</h4>
-            <div class="members" id="membersList">
-              <div class="member">
-                <div class="avatar">M</div>
-                <div>
-                  <div style="font-weight:600">Marcel Zivojin</div>
-                  <div style="font-size:13px;color:rgba(245,247,251,0.7)">Harmonika & Klavijatura</div>
-                </div>
-              </div>
-              <div class="member">
-                <div class="avatar">D</div>
-                <div>
-                  <div style="font-weight:600">Dejana Miletic</div>
-                  <div style="font-size:13px;color:rgba(245,247,251,0.7)">Vokal</div>
-                </div>
-              </div>
-              <div class="member">
-                <div class="avatar">M</div>
-                <div>
-                  <div style="font-weight:600">Mica Babic</div>
-                  <div style="font-size:13px;color:rgba(245,247,251,0.7)">Vokal</div>
-                </div>
-              </div>
-            </div>
+      <!-- Član 2 -->
+      <div class="band-member">
+        <img src="muzicar2.jpg" alt="Jovan Ilić">
+        <div>
+          <strong>Jovan Ilić</strong><br>
+          Bubnjevi<br>
+          📍 Lokacija: Novi Sad
+        </div>
+      </div>
 
-            <div class="location" aria-label="Lokacija">
-              <div style="font-weight:700">Glavni član: Marcel Zivojin</div>
-              <div style="margin-top:8px;color:rgba(245,247,251,0.8)">
-                Lokacija: Sutjeska, Srbija<br>
-                Dostupnost: vikendi,praznici,nova godina i preko nedelje (po dogovoru)
-              </div>
-            </div>
+      <!-- Član 3 -->
+      <div class="band-member">
+        <img src="muzicar3.jpg" alt="Stefan Lazić">
+        <div>
+          <strong>Stefan Lazić</strong><br>
+          Klavijature<br>
+          📍 Lokacija: Kragujevac
+        </div>
+      </div>
 
-            <div style="margin-top:12px">
-              <button id="backBtn" class="btn-ghost" style="width:100%">Nazad na formu</button>
-              <button id="sendBtn" class="btn-primary" style="width:100%;margin-top:8px">Pošalji rezervaciju</button>
-            </div>
-          </div>
-        </aside>
+      <!-- Član 4 -->
+      <div class="band-member">
+        <img src="muzicar4.jpg" alt="Nemanja Kostić">
+        <div>
+          <strong>Nemanja Kostić</strong><br>
+          Bas gitara<br>
+          📍 Lokacija: Niš
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <button id="backBtn">← Nazad</button>
+        <button id="sendBtn">Pošalji rezervaciju</button>
       </div>
     </section>
-
-    <footer>
-      Napravljeno brzo — prilagodi tekstове i slike. Zamenite Formspree ID da bi email stizao direktno na vaš inbox.
-    </footer>
   </div>
 
   <script>
-    (function(){
-      const form = document.getElementById('contactForm');
-      const stepForm = document.getElementById('step-form');
-      const stepContent = document.getElementById('step-content');
-      const clearBtn = document.getElementById('clearBtn');
-      const backBtn = document.getElementById('backBtn');
-      const sendBtn = document.getElementById('sendBtn');
+    const form = document.getElementById('contactForm');
+    const stepForm = document.getElementById('step-form');
+    const stepContent = document.getElementById('step-content');
+    const sendBtn = document.getElementById('sendBtn');
+    const backBtn = document.getElementById('backBtn');
 
-      // --- PODESI OVDE: zameni sa svojim Formspree ID (npr. https://formspree.io/f/xdkwdgqb)
-      // Ako ne želiš Formspree, ostavi prazan string i koristit će se mailto fallback.
-      const FORMSPREE_ENDPOINT = ""; // primer: "https://formspree.io/f/abcd1234"
+    const FORMSPREE_ENDPOINT = ""; // Dodaj Formspree link ovde ako koristiš
 
-      // Pošalji formu - prvi korak prelazak na stranicu sa sadržajem
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        // validacija (simple)
-        const name = form.name.value.trim();
-        const phone = form.phone.value.trim();
-        const message = form.message.value.trim();
-        if(!name || !phone || !message){
-          alert('Popuni sva polja pre nego što nastaviš.');
-          return;
-        }
+    // Korak 1 -> 2
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-        // prikaz sadržaja
-        stepForm.style.display = 'none';
-        stepContent.style.display = 'block';
-        window.scrollTo({top:0,behavior:'smooth'});
-        // zapamti vrednosti u global (za slanje kasnije)
-        window._reservationData = {name,phone,message};
-        // ažuriraj tekst u opisu (možeš prilagoditi)
-        document.getElementById('bandDescription').textContent =
-          "[Maki Bend] je energičan sastav koji kombinuje moderni rock i pop sa primesama groove-a. Repertoar uključuje originalne pesme i pažljivo birane obrade. Kontakt: " + name + " — poruka spremljena za slanje.";
-      });
+      const name = form.name.value.trim();
+      const phone = form.phone.value.trim();
+      const message = form.message.value.trim();
 
-      clearBtn.addEventListener('click', function(){ form.reset(); });
+      if (!name || !phone || !message) {
+        alert('Popuni sva polja pre nego što nastaviš.');
+        return;
+      }
 
-      backBtn.addEventListener('click', function(){
-        stepContent.style.display = 'none';
-        stepForm.style.display = 'block';
-      });
+      // Sakrij formu, prikaži info o bendu
+      stepForm.style.display = 'none';
+      stepContent.style.display = 'block';
 
-      // kad korisnik klikne Pošalji rezervaciju -> šalje se email (Formspree ili mailto fallback)
-      sendBtn.addEventListener('click', async function(){
-        const data = window._reservationData || {};
-        if(!data.name){
-          alert('Nema podataka iz forme — prvo popuni i pritisni "Sledeće".');
-          return;
-        }
+      window._reservationData = { name, phone, message };
+    });
 
-        // sastavi telo poruke
-        const subject = encodeURIComponent('Rezervacija/bend: ' + (data.name||'Anonimno'));
-        const bodyText = [
-          'Ime: ' + data.name,
-          'Telefon: ' + data.phone,
-          'Poruka: ' + data.message,
-          '',
-          'Poslato sa sajta benda'
-        ].join('\n');
+    // Nazad na formu
+    backBtn.addEventListener('click', function() {
+      stepContent.style.display = 'none';
+      stepForm.style.display = 'block';
+    });
 
-        if(FORMSPREE_ENDPOINT && FORMSPREE_ENDPOINT.startsWith('https://')){
-          // pošalji POST na Formspree
-          try{
-            sendBtn.disabled = true;
-            sendBtn.textContent = 'Šaljem...';
-            const payload = {
-              name: data.name,
-              phone: data.phone,
-              message: data.message,
-              _subject: 'Rezervacija: ' + data.name
-            };
-            const resp = await fetch(FORMSPREE_ENDPOINT, {
-              method:'POST',
-              headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
-              body: JSON.stringify(payload)
-            });
-            if(resp.ok){
-              alert('Poruka poslata! Bend će te kontaktirati uskoro.');
-              form.reset();
-              stepContent.style.display = 'none';
-              stepForm.style.display = 'block';
-            } else {
-              const json = await resp.json().catch(()=>null);
-              console.error('Formspree greška', resp.status, json);
-              alert('Došlo je do greške pri slanju. Pokušaj ponovo ili koristi mailto.');
-            }
-          }catch(err){
-            console.error(err);
-            alert('Greška pri slanju. Proveri internet vezu.');
-          }finally{
-            sendBtn.disabled = false;
-            sendBtn.textContent = 'Pošalji rezervaciju';
+    // Pošalji podatke
+    sendBtn.addEventListener('click', async function() {
+      const data = window._reservationData || {};
+
+      if (!data.name || !data.phone || !data.message) {
+        alert("Podaci nisu kompletni.");
+        return;
+      }
+
+      const subject = "Rezervacija benda: " + data.name;
+      const bodyText = `Ime: ${data.name}
+Telefon: ${data.phone}
+Poruka: ${data.message}
+---------------------------
+Poslato sa sajta benda.`;
+
+      if (FORMSPREE_ENDPOINT) {
+        try {
+          const response = await fetch(FORMSPREE_ENDPOINT, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            alert("Rezervacija je uspešno poslata!");
+          } else {
+            alert("Greška pri slanju rezervacije.");
           }
-        } else {
-          // fallback: mailto
-          const mailto = 'zivojinmarcel3@gmail.com'
-            + '?subject=' + subject
-            + '&body=' + encodeURIComponent(bodyText);
-          // otvori mail klijent
-          window.location.href = mailto;
+        } catch (err) {
+          alert("Greška: " + err.message);
         }
-      });
-
-      // --- OPTIONAL: zameni slike/članove dinamički (primer)
-      // Ako želiš da se slike ili članovi dinamički menjaju prema podacima, možeš ovo proširiti.
-    })();
+      } else {
+        // Mailto fallback
+        const mailto = `mailto:tvoj@email.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+        window.location.href = mailto;
+      }
+    });
   </script>
-<script>
-  const form = document.getElementById('contactForm');
-  const stepForm = document.getElementById('step-form');
-  const stepContent = document.getElementById('step-content');
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const name = form.name.value.trim();
-    const phone = form.phone.value.trim();
-    const message = form.message.value.trim();
-
-    if(!name || !phone || !message){
-      alert('Popuni sva polja pre nego što nastaviš.');
-      return;
-    }
-
-    // Sakrij prvi deo, prikaži drugi
-    stepForm.style.display = 'none';
-    stepContent.style.display = 'block';
-    window.scrollTo({top:0, behavior:'smooth'});
-  });
-
-  document.getElementById('clearBtn').addEventListener('click', function(){
-    form.reset();
-  });
-
-  document.getElementById('backBtn').addEventListener('click', function(){
-    stepContent.style.display = 'none';
-    stepForm.style.display = 'block';
-  });
-</script>
 </body>
 </html>
-
-
-
-
-
